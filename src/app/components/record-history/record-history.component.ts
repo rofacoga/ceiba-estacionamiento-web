@@ -9,7 +9,7 @@ import { DataService } from '../../services/data.service';
 })
 export class RecordHistoryComponent implements OnInit {
   tituloPagina = 'Historial de vehículos estacionados';
-  columnasMostrar: string[] = ['placa', 'fechaIngreso'];
+  columnasMostrar: string[] = ['placa', 'tipoVehiculo', 'fechaIngreso'];
   historial: ParkingRecord[] = [];
 
   constructor(private dataService: DataService) { }
@@ -17,7 +17,10 @@ export class RecordHistoryComponent implements OnInit {
   ngOnInit() {
     this.dataService.getData('keeper', 'allParkedVehicles').subscribe(
       data => {
-        this.historial = data;
+        this.historial = data as ParkingRecord[];
+      },
+      error => {
+        console.log('error', error);
     });
   }
 

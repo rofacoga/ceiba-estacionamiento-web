@@ -5,7 +5,7 @@ import { DialogCheckInComponent } from '../dialog-check-in/dialog-check-in.compo
 import { Vehicle } from '../vehicles/vehicles.component';
 import { DialogCheckOutComponent } from '../dialog-check-out/dialog-check-out.component';
 
-export interface ParkingRecord {
+export class ParkingRecord {
   keeperIn: number;
   keeperOut: number;
   vehicle: Vehicle;
@@ -18,6 +18,10 @@ export interface ParkingRecord {
   id: number;
   registrationActive: Boolean;
   registrationDate: Date;
+
+  constructor() {
+    this.vehicle = new Vehicle();
+  }
 }
 
 @Component({
@@ -26,7 +30,9 @@ export interface ParkingRecord {
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  displayedColumns: string[] = ['placa', 'fechaIngreso'];
+  public idVigilante = 1;
+
+  displayedColumns: string[] = ['placa', 'tipoVehiculo', 'fechaIngreso'];
   btnIngreso = 'Ingresar Vehículo';
   btnSalida = 'Retirar Vehículo';
 
@@ -38,9 +44,11 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.dataService.getData('keeper', 'allParkedVehicles').subscribe(
       data => {
-        this.listParked = data;
-        console.log(data);
-    });
+        this.listParked = data as ParkingRecord[];
+    },
+    error => {
+      console.log('error', error);
+  });
   }
 
   openDialogCheckIn(): void {

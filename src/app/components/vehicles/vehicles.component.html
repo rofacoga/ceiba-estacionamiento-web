@@ -1,6 +1,4 @@
-<p>
-  vehicles works!
-</p>
+<h1>{{tituloPagina}}</h1>
 <table mat-table [dataSource]="vehiculos">
     <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
@@ -27,6 +25,12 @@
     <ng-container matColumnDef="cilindraje500">
       <th mat-header-cell *matHeaderCellDef> Cilindraje mayor a 500 </th>
       <td mat-cell *matCellDef="let row"> {{row.cylinderGreaterThan500}} </td>
+    </ng-container>
+
+    <!-- checkIn Column -->
+    <ng-container matColumnDef="registradoDesde">
+      <th mat-header-cell *matHeaderCellDef> Registrado el </th>
+      <td mat-cell *matCellDef="let row"> {{row.registrationDate | date:'HH:mm:ss - dd/MM/yyyy' }} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnasMostrar"></tr>

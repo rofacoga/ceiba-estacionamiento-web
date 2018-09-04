@@ -4,6 +4,7 @@ import { DataService } from './services/data.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Route } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 // Animaciones
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -53,7 +54,9 @@ const routes: Route[] = [
     HttpClientModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [DataService],
+  providers: [
+    DataService,
+    DatePipe],
   bootstrap: [AppComponent]
 })
 

@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ParkingRecord } from '../main/main.component';
 import { DataService } from '../../services/data.service';
 import { VehicleTypeEnum } from '../vehicles/vehicles.component';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dialog-check-in',
@@ -16,30 +18,32 @@ export class DialogCheckInComponent implements OnInit {
 
   listTypes: VehicleTypeEnum[];
   record: ParkingRecord;
-  fechaIngreso: Date = new Date();
+  fechaIngreso: string;
   placa: string;
-  tipoVehiculo: VehicleTypeEnum;
-  cilindrajeMayor500: Boolean;
+  tipoVehiculo: string;
+  cilindrajeMayor500: string;
   cilindraje: number;
 
   constructor(
     private dataService: DataService,
+    private datePipe: DatePipe,
     public dialogRef: MatDialogRef<DialogCheckInComponent>,
     @Optional()
     @Inject(MAT_DIALOG_DATA)
     public data: any
-  ) {
-    this.fechaIngreso = this.fechaIngreso.getFullYear() + '-' +
-      ('0' + (this.fechaIngreso.getMonth() + 1)).slice(-2) + '-' +
-      ('0' + this.fechaIngreso.getDate()).slice(-2) + 'T' + this.fechaIngreso.getHours() + ':' +
-      this.fechaIngreso.getMinutes();
+  ) {}
 
-      this.dataService.getData('vehicle', 'allTypesVehicles').subscribe(data => {
-      this.listTypes = data;
+  ngOnInit() {
+    this.record = new ParkingRecord();
+    this.fechaIngreso = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-ddThh:mm:ss'
+    );
+
+    this.dataService.getData('vehicle', 'allTypesVehicles').subscribe(data => {
+      this.listTypes = data as VehicleTypeEnum[];
     });
   }
-
-  ngOnInit() {}
 
   validarCilindraje(ku) {
     console.log(this.cilindraje);
@@ -47,14 +51,26 @@ export class DialogCheckInComponent implements OnInit {
   }
 
   onClickAceptar() {
-    console.log('pase por aqui');
+    this.record.keeperIn = 1;
+    this.record.checkIn = new Date(this.fechaIngreso);
+    this.record.vehicle.plate = this.placa;
+    this.record.vehicle.type = this.tipoVehiculo;
+    this.record.vehicle.cylinder = this.cilindraje;
+    this.record.vehicle.cylinderGreaterThan500 =
+      ( this.cilindraje === undefined || this.cilindraje === null ) ? (this.cilindrajeMayor500 === '1') : (this.cilindraje > 500);
 
-    console.log(this.record);
-    console.log(this.fechaIngreso);
-    console.log(this.placa);
-    console.log(this.tipoVehiculo);
-    console.log(this.cilindraje);
-    console.log(this.cilindrajeMayor500);
+    this.dataService.postData('keeper', 'checkIn', this.record).subscribe(
+      datos => {
+        console.log('success: ', datos);
+        this.dialogRef.close(
+          swal('Registro exitoso!', null, 'success')
+        );
+      },
+      error => {
+        console.log('errors: ', error);
+        swal('Ha ocurrido un problema!', error.error.message, 'error');
+      }
+    );
   }
 
   onClickCancelar() {

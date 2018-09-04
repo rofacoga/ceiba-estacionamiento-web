@@ -6,7 +6,7 @@ export enum VehicleTypeEnum {
   VEHICLE = 1
 }
 
-export interface Vehicle {
+export class Vehicle {
   plate: string;
   cylinder: number;
   cylinderGreaterThan500: boolean;
@@ -15,6 +15,8 @@ export interface Vehicle {
   id: number;
   registrationActive: Boolean;
   registrationDate: Date;
+
+  constructor() {}
 }
 
 @Component({
@@ -23,8 +25,8 @@ export interface Vehicle {
   styleUrls: ['./vehicles.component.css']
 })
 export class VehiclesComponent implements OnInit {
-  tituloPagina = 'Historial de vehículos estacionados';
-  columnasMostrar: string[] = ['placa', 'tipoVehiculo', 'cilindraje', 'cilindraje500'];
+  tituloPagina = 'Vehículos registrados';
+  columnasMostrar: string[] = ['placa', 'tipoVehiculo', 'cilindraje', 'cilindraje500', 'registradoDesde'];
   vehiculos: Vehicle[] = [];
 
   constructor(private dataService: DataService) {}
@@ -32,8 +34,10 @@ export class VehiclesComponent implements OnInit {
   ngOnInit() {
     this.dataService.getData('vehicle', 'allVehicles').subscribe(
       data => {
-        this.vehiculos = data;
-        console.log(data);
-    });
+        this.vehiculos = data as Vehicle[];
+    },
+    error => {
+      console.log('error', error);
+  });
   }
 }

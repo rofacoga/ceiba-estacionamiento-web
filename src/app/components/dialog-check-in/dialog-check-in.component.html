@@ -8,42 +8,39 @@
     <mat-card-content>
       <mat-form-field class="example-form-field">
         <input matInput type="datetime-local" placeholder="Hora" [(ngModel)]="fechaIngreso"
-          name="inputFechaIngreso" [ngModelOptions]="{standalone: true}" required>
-        <button mat-button *ngIf="fechaIngreso" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-          <mat-icon>close</mat-icon>
-        </button>
+          name="inputFechaIngreso" required>
       </mat-form-field>
       <br />
       <mat-form-field class="example-form-field">
-        <input matInput type="text" placeholder="Placa" [(ngModel)]="plate" minlength="5" maxlength="6"
-          name="inputPlaca" [ngModelOptions]="{standalone: true}" required>
-        <button mat-button *ngIf="placa" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+        <input matInput type="text" placeholder="Placa" [(ngModel)]="placa" minlength="5" maxlength="6"
+          name="inputPlaca" autofocus required>
+        <button mat-button *ngIf="placa" matSuffix mat-icon-button aria-label="Limpiar" (click)="value=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
       <mat-form-field class="example-form-field">
-        <mat-select placeholder="Tipo de Vehiculo" [(ngModel)]="tipoVehiculo" aria-required="true">
-          <mat-option *ngFor="let tipo of listTypes">{{tipo}}</mat-option>
+        <mat-select placeholder="Tipo de Vehiculo" [(ngModel)]="tipoVehiculo" name="vehycleType" required>
+          <mat-option *ngFor="let tipo of listTypes" [value]="tipo">{{tipo}}</mat-option>
         </mat-select>
       </mat-form-field>
       <br />
       <section class="example-section">
-        <mat-label>Cilindraje mayor a 500cc: </mat-label>
+        <mat-label for="cilynder500">Cilindraje mayor a 500cc: </mat-label>
         <br />
-        <mat-radio-group pla [(ngModel)]="cilindrajeMayor500" aria-required="true">
-          <mat-radio-button class="example-margin" value="true">Si</mat-radio-button>
-          <mat-radio-button class="example-margin" value="false">No</mat-radio-button>
+        <mat-radio-group required [(ngModel)]="cilindrajeMayor500" name="cilynder500">
+          <mat-radio-button class="example-margin" value="1">Si</mat-radio-button>
+          <mat-radio-button class="example-margin" value="0">No</mat-radio-button>
         </mat-radio-group>
       </section>
       <mat-form-field class="example-form-field">
         <input matInput type="text" placeholder="Cilindraje" [(ngModel)]="cilindraje" onkeyup="this"
-          name="inputCilindraje" [ngModelOptions]="{standalone: true}" maxlength=6>
-        <button mat-button *ngIf="cilindraje" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+          name="inputCilindraje" maxlength=6>
+        <button mat-button *ngIf="cilindraje" matSuffix mat-icon-button aria-label="Limpiar" (click)="value=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions right>
       <button mat-raised-button color="warn" (click)="onClickCancelar()">{{btnCancelar}}</button>
       <button mat-raised-button color="primary" (click)="onClickAceptar()">{{btnAceptar}}</button>
     </mat-card-actions>
