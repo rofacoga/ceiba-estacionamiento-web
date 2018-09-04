@@ -1,30 +1,22 @@
-<p>
-  login works!
-</p>
-<div class="container">
-
-  <div class="container text-center">
-    <form class="form-signin" data-ember-action="2">
-      <h2 class="form-signin-heading">Sign in</h2>
-      <br>
-      <div class="col-lg-12 text-center" style="margin-top: 50px">
-        <img class="img-avatar" alt="">
-      </div>
-      <div class="col-lg-12">
-        <label>{{lblUser}}
-          <input type="text" formControlName="user">
-        </label>
-        <label>{{lblPass}}
-          <input type="password" formControlName="pass">
-        </label>
-      </div>
-      <br><br>
-
-      <small class="text-muted">Or sign in with [your service]</small>
-      <br><br>
-
-      <br>
-      <small class="create-account text-muted">Dont have a [your service] or social network account? <button id="ember363"
-          class="ember-view btn btn-sm btn-default"> Sign Up </button> </small>
-    </form>
-  </div>
+<mat-card class="example-card">
+  <mat-card-header layout="row" layout-align="center center" >
+    <mat-card-title bold>{{titlePage}}</mat-card-title>
+    <mat-card-subtitle>{{subtitlePage}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field class="example-form-field">
+      <input matInput type="text" placeholder="{{lblUser}}" [(ngModel)]="user">
+      <button mat-button *ngIf="user" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput placeholder="{{lblPass}}" [type]="hidePass ? 'password' : 'text'">
+      <mat-icon matSuffix (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button color="primary">{{btnLogin}}</button>
+  </mat-card-actions>
+</mat-card>

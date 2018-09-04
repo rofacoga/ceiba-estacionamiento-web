@@ -1,3 +1,27 @@
-<p>
-  main works!
-</p>
+<div layout="column" layout-align="center center">
+  <mat-card class="card-40-center">
+    <mat-card-actions layout="row" layout-align="center">
+      <button mat-raised-button (click)="openDialogCheckIn()">{{btnIngreso}}</button>
+      <button mat-raised-button (click)="openDialogCheckOut()">{{btnSalida}}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<table mat-table [dataSource]="listParked" class="mat-elevation-z8">
+  <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- plate Column -->
+  <ng-container matColumnDef="placa">
+    <th mat-header-cell *matHeaderCellDef> Placa </th>
+    <td mat-cell *matCellDef="let row"> {{row.vehicle.plate}} </td>
+  </ng-container>
+
+  <!-- checkIn Column -->
+  <ng-container matColumnDef="fechaIngreso">
+    <th mat-header-cell *matHeaderCellDef> Fecha Ingreso </th>
+    <td mat-cell *matCellDef="let row"> {{row.checkIn}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
