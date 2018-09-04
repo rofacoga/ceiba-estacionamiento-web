@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../services/data.service';
 
 export enum VehicleTypeEnum {
   MOTORCYCLE= 0,
@@ -22,7 +23,17 @@ export interface Vehicle {
   styleUrls: ['./vehicles.component.css']
 })
 export class VehiclesComponent implements OnInit {
-  constructor() {}
+  tituloPagina = 'Historial de vehículos estacionados';
+  columnasMostrar: string[] = ['placa', 'tipoVehiculo', 'cilindraje', 'cilindraje500'];
+  vehiculos: Vehicle[] = [];
 
-  ngOnInit() {}
+  constructor(private dataService: DataService) {}
+
+  ngOnInit() {
+    this.dataService.getData('vehicle', 'allVehicles').subscribe(
+      data => {
+        this.vehiculos = data;
+        console.log(data);
+    });
+  }
 }

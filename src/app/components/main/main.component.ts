@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DataService } from '../../services/data.service';
 import { DialogCheckInComponent } from '../dialog-check-in/dialog-check-in.component';
-import { Vehicle, VehicleTypeEnum } from '../vehicles/vehicles.component';
+import { Vehicle } from '../vehicles/vehicles.component';
 import { DialogCheckOutComponent } from '../dialog-check-out/dialog-check-out.component';
 
 export interface ParkingRecord {
