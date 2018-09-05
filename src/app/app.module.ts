@@ -56,7 +56,8 @@ const routes: Route[] = [
   ],
   providers: [
     DataService,
-    DatePipe],
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 

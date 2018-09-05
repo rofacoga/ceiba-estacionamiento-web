@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ParkingRecord } from '../main/main.component';
 import { DataService } from '../../services/data.service';
-//Sweet Alert
+// Sweet Alert
 import swal from 'sweetalert2';
 
 @Component({

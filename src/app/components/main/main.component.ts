@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatTableDataSource } from '@angular/material';
 import { DataService } from '../../services/data.service';
 import { DialogCheckInComponent } from '../dialog-check-in/dialog-check-in.component';
 import { Vehicle } from '../vehicles/vehicles.component';
 import { DialogCheckOutComponent } from '../dialog-check-out/dialog-check-out.component';
+import swal from 'sweetalert2';
 
 export class ParkingRecord {
   keeperIn: number;
@@ -32,7 +33,9 @@ export class ParkingRecord {
 export class MainComponent implements OnInit {
   public idVigilante = 1;
 
-  displayedColumns: string[] = ['placa', 'tipoVehiculo', 'fechaIngreso'];
+  displayedColumns: string[] = ['placa', 'tipoVehiculo', 'fechaIngreso', 'retiraVehiculo'];
+  dataSource = new MatTableDataSource();
+
   btnIngreso = 'Ingresar Vehículo';
   btnSalida = 'Retirar Vehículo';
 
@@ -45,10 +48,15 @@ export class MainComponent implements OnInit {
     this.dataService.getData('keeper', 'allParkedVehicles').subscribe(
       data => {
         this.listParked = data as ParkingRecord[];
-    },
-    error => {
-      console.log('error', error);
-  });
+        this.dataSource = new MatTableDataSource(this.listParked);
+      },
+      error => {
+        console.log('error', error);
+    });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   openDialogCheckIn(): void {
@@ -73,5 +81,27 @@ export class MainComponent implements OnInit {
       console.log('The dialog out was closed');
       this.parked = result;
     });
+  }
+
+  retirarVehiculo(record: ParkingRecord): void {
+    console.log('entre');
+
+    record.keeperOut = 1;
+    record.checkOut = new Date();
+
+    this.dataService.postData('keeper', 'checkOut', record).subscribe(
+      data => {
+        console.log('success: ', data);
+        const recordOk: ParkingRecord = data as ParkingRecord;
+        const mensaje = 'El vehículo con placa ' + recordOk.vehicle.plate
+          + ', estuvo estacionado por ' + recordOk.totalDays + ' días, ' + recordOk.totalHours
+          + ' horas, y debe pagar <b>' + recordOk.totalCost + '</b>';
+
+        swal('Salida Exitosa!', mensaje, 'success');
+      }, error => {
+        console.log('error: ', error);
+        swal('Ha ocurrido un problema!', error.error.message, 'error');
+      }
+    );
   }
 }
