@@ -1,29 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatTableDataSource } from '@angular/material';
+import { ParkingRecord } from '../../models/parking-record';
 import { DataService } from '../../services/data.service';
 import { DialogCheckInComponent } from '../dialog-check-in/dialog-check-in.component';
-import { Vehicle } from '../vehicles/vehicles.component';
 import { DialogCheckOutComponent } from '../dialog-check-out/dialog-check-out.component';
 import swal from 'sweetalert2';
-
-export class ParkingRecord {
-  keeperIn: number;
-  keeperOut: number;
-  vehicle: Vehicle;
-  checkIn: Date;
-  checkOut: Date;
-  totalDays: number;
-  totalHours: number;
-  totalCost: number;
-
-  id: number;
-  registrationActive: Boolean;
-  registrationDate: Date;
-
-  constructor() {
-    this.vehicle = new Vehicle();
-  }
-}
 
 @Component({
   selector: 'app-main',
@@ -45,6 +26,10 @@ export class MainComponent implements OnInit {
   constructor( private dataService: DataService, public dialog: MatDialog ) {}
 
   ngOnInit() {
+    this.listarVehiculos();
+  }
+
+  listarVehiculos(): void {
     this.dataService.getData('keeper', 'allParkedVehicles').subscribe(
       data => {
         this.listParked = data as ParkingRecord[];
@@ -66,7 +51,8 @@ export class MainComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog in was closed');
+      console.log('The dialog out was closed', result);
+      this.listarVehiculos();
       this.parked = result;
     });
   }
@@ -78,8 +64,8 @@ export class MainComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog out was closed');
-      this.parked = result;
+      console.log('The dialog out was closed', result);
+      this.mostrarMensajePago(result);
     });
   }
 
@@ -93,15 +79,21 @@ export class MainComponent implements OnInit {
       data => {
         console.log('success: ', data);
         const recordOk: ParkingRecord = data as ParkingRecord;
-        const mensaje = 'El vehículo con placa ' + recordOk.vehicle.plate
-          + ', estuvo estacionado por ' + recordOk.totalDays + ' días, ' + recordOk.totalHours
-          + ' horas, y debe pagar <b>' + recordOk.totalCost + '</b>';
+        this.mostrarMensajePago(recordOk);
 
-        swal('Salida Exitosa!', mensaje, 'success');
       }, error => {
         console.log('error: ', error);
         swal('Ha ocurrido un problema!', error.error.message, 'error');
       }
     );
+  }
+
+  mostrarMensajePago(recordOk: ParkingRecord): void {
+    const mensaje = 'El vehículo con placa <b>' + recordOk.vehicle.plate + '</b>'
+      + ', <br>estuvo estacionado por: <br>' + recordOk.totalDays + ' días, <br>' + recordOk.totalHours
+      + ' horas, <br>debe pagar <b>$ ' + recordOk.totalCost + '</b>';
+
+    this.listarVehiculos();
+    swal('Salida Exitosa!', mensaje, 'success');
   }
 }

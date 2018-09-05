@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ParkingRecord } from '../main/main.component';
 import { DataService } from '../../services/data.service';
-import { VehicleTypeEnum } from '../vehicles/vehicles.component';
+import { VehicleType } from '../../models/vehicle-type.enum';
+import { Vehicle } from '../../models/vehicle';
+import { ParkingRecord } from '../../models/parking-record';
 import swal from 'sweetalert2';
 
 @Component({
@@ -16,13 +17,11 @@ export class DialogCheckInComponent implements OnInit {
   btnAceptar = 'Aceptar';
   btnCancelar = 'Cancelar';
 
-  listTypes: VehicleTypeEnum[];
+  listTypes: VehicleType[];
   record: ParkingRecord;
   fechaIngreso: string;
-  placa: string;
   tipoVehiculo: string;
   cilindrajeMayor500: string;
-  cilindraje: number;
 
   constructor(
     private dataService: DataService,
@@ -35,36 +34,32 @@ export class DialogCheckInComponent implements OnInit {
 
   ngOnInit() {
     this.record = new ParkingRecord();
+    this.record.vehicle = new Vehicle();
     this.fechaIngreso = this.datePipe.transform(
       new Date(),
       'yyyy-MM-ddThh:mm:ss'
     );
 
     this.dataService.getData('vehicle', 'allTypesVehicles').subscribe(data => {
-      this.listTypes = data as VehicleTypeEnum[];
+      this.listTypes = data as VehicleType[];
     });
-  }
-
-  validarCilindraje(ku) {
-    console.log(this.cilindraje);
-    console.log(ku);
   }
 
   onClickAceptar() {
     this.record.keeperIn = 1;
     this.record.checkIn = new Date(this.fechaIngreso);
-    this.record.vehicle.plate = this.placa;
     this.record.vehicle.type = this.tipoVehiculo;
-    this.record.vehicle.cylinder = this.cilindraje;
     this.record.vehicle.cylinderGreaterThan500 =
-      ( this.cilindraje === undefined || this.cilindraje === null ) ? (this.cilindrajeMayor500 === '1') : (this.cilindraje > 500);
+      this.record.vehicle.cylinder === undefined ||
+      this.record.vehicle.cylinder === null
+        ? this.cilindrajeMayor500 === '1'
+        : this.record.vehicle.cylinder > 500;
 
     this.dataService.postData('keeper', 'checkIn', this.record).subscribe(
       datos => {
         console.log('success: ', datos);
-        this.dialogRef.close(
-          swal('Registro exitoso!', null, 'success')
-        );
+        swal('Registro exitoso!', '', 'success');
+        this.dialogRef.close();
       },
       error => {
         console.log('errors: ', error);

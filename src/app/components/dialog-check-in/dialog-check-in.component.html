@@ -12,9 +12,9 @@
       </mat-form-field>
       <br />
       <mat-form-field class="example-form-field">
-        <input matInput type="text" placeholder="Placa" [(ngModel)]="placa" minlength="5" maxlength="6"
+        <input matInput type="text" placeholder="Placa" [(ngModel)]="record.vehicle.plate" minlength="5" maxlength="6"
           name="inputPlaca" autofocus required>
-        <button mat-button *ngIf="placa" matSuffix mat-icon-button aria-label="Limpiar" (click)="value=''">
+        <button mat-button *ngIf="record.vehicle.plate" matSuffix mat-icon-button aria-label="Limpiar" (click)="value=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -33,9 +33,9 @@
         </mat-radio-group>
       </section>
       <mat-form-field class="example-form-field">
-        <input matInput type="text" placeholder="Cilindraje" [(ngModel)]="cilindraje" onkeyup="this"
+        <input matInput type="text" placeholder="Cilindraje" [(ngModel)]="record.vehicle.cylinder" onkeyup="this"
           name="inputCilindraje" maxlength=6>
-        <button mat-button *ngIf="cilindraje" matSuffix mat-icon-button aria-label="Limpiar" (click)="value=''">
+        <button mat-button *ngIf="record.vehicle.cylinder" matSuffix mat-icon-button aria-label="Limpiar" (click)="value=''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>

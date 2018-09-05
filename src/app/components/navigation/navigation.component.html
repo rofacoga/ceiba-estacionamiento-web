@@ -8,7 +8,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-tab-group>
-  <mat-tab label="{{lblHome}}">
+  <mat-tab label="{{lblHome}}" (click)="app-main.ngOnInit()">
     <app-main></app-main>
   </mat-tab>
   <mat-tab label="{{lblHistory}}">

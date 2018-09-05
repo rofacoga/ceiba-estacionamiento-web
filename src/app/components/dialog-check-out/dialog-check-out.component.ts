@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { ParkingRecord } from '../main/main.component';
+import { ParkingRecord } from '../../models/parking-record';
 import { DataService } from '../../services/data.service';
 // Sweet Alert
 import swal from 'sweetalert2';
@@ -77,13 +77,8 @@ export class DialogCheckOutComponent implements OnInit {
         data => {
           console.log('success: ', data);
           const recordOk: ParkingRecord = data as ParkingRecord;
-          const mensaje = 'El vehículo con placa ' + recordOk.vehicle.plate
-            + ', estuvo estacionado por ' + recordOk.totalDays + ' días, ' + recordOk.totalHours
-            + ' horas, y debe pagar <b>' + recordOk.totalCost + '</b>';
+          this.dialogRef.close( recordOk );
 
-          this.dialogRef.close(
-            swal('Salida Exitosa!', mensaje, 'success')
-          );
         }, error => {
           console.log('error: ', error);
           swal('Ha ocurrido un problema!', error.error.message, 'error');

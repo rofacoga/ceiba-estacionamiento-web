@@ -1,24 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
 import { MatTableDataSource } from '@angular/material';
-
-export enum VehicleTypeEnum {
-  MOTORCYCLE= 0,
-  VEHICLE = 1
-}
-
-export class Vehicle {
-  plate: string;
-  cylinder: number;
-  cylinderGreaterThan500: boolean;
-  type: VehicleTypeEnum;
-
-  id: number;
-  registrationActive: Boolean;
-  registrationDate: Date;
-
-  constructor() {}
-}
+import { Vehicle } from '../../models/vehicle';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-vehicles',

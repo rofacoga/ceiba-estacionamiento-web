@@ -18,6 +18,7 @@ import { RecordHistoryComponent } from './components/record-history/record-histo
 import { VehiclesComponent } from './components/vehicles/vehicles.component';
 import { DialogCheckInComponent } from './components/dialog-check-in/dialog-check-in.component';
 import { DialogCheckOutComponent } from './components/dialog-check-out/dialog-check-out.component';
+import { VehicleTypePipe } from './pipes/vehicle-type.pipe';
 
 const routes: Route[] = [
   {path: 'login', component: LoginComponent},
@@ -35,7 +36,8 @@ const routes: Route[] = [
     RecordHistoryComponent,
     VehiclesComponent,
     DialogCheckInComponent,
-    DialogCheckOutComponent
+    DialogCheckOutComponent,
+    VehicleTypePipe
   ],
   entryComponents: [
     DialogCheckInComponent,

@@ -13,25 +13,25 @@
       <td mat-cell *matCellDef="let row"> {{row.plate}} </td>
     </ng-container>
 
-    <!-- checkIn Column -->
+    <!-- tipoVehiculo Column -->
     <ng-container matColumnDef="tipoVehiculo">
       <th mat-header-cell *matHeaderCellDef> Tipo de Vehiculo </th>
-      <td mat-cell *matCellDef="let row"> {{row.type}} </td>
+      <td mat-cell *matCellDef="let row"> {{ row.type | vehicleType }} </td>
     </ng-container>
 
-    <!-- checkIn Column -->
+    <!-- cilindraje Column -->
     <ng-container matColumnDef="cilindraje">
       <th mat-header-cell *matHeaderCellDef> Cilindraje </th>
       <td mat-cell *matCellDef="let row"> {{row.cylinder}} </td>
     </ng-container>
 
-    <!-- checkIn Column -->
+    <!-- cilindraje500 Column -->
     <ng-container matColumnDef="cilindraje500">
       <th mat-header-cell *matHeaderCellDef> Cilindraje mayor a 500 </th>
       <td mat-cell *matCellDef="let row"> {{ (row.cylinderGreaterThan500) ? "Si" : "No" }} </td>
     </ng-container>
 
-    <!-- checkIn Column -->
+    <!-- registradoDesde Column -->
     <ng-container matColumnDef="registradoDesde">
       <th mat-header-cell *matHeaderCellDef> Registrado el </th>
       <td mat-cell *matCellDef="let row"> {{row.registrationDate | date:'HH:mm:ss - dd/MM/yyyy' }} </td>
