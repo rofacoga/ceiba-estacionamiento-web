@@ -20,7 +20,7 @@
       </mat-form-field>
       <mat-form-field class="example-form-field">
         <mat-select placeholder="Tipo de Vehiculo" [(ngModel)]="tipoVehiculo" name="vehycleType" required>
-          <mat-option *ngFor="let tipo of listTypes" [value]="tipo">{{tipo}}</mat-option>
+          <mat-option *ngFor="let tipo of listTypes" [value]="tipo">{{tipo | vehicleType}}</mat-option>
         </mat-select>
       </mat-form-field>
       <br />
